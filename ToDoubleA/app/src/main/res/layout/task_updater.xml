@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <EditText
         android:id="@+id/title_updater"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:inputType="text"
+        android:inputType="textPersonName"
         tools:ignore="MissingConstraints" />
     <EditText
         android:id="@+id/description_updater"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         tools:ignore="MissingConstraints" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageButton
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_menu_save"
+        tools:ignore="MissingConstraints" />
+
+</LinearLayout>

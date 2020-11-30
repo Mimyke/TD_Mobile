@@ -12,7 +12,7 @@ class TaskListAdapter(private val taskList: List<Task>) : RecyclerView.Adapter<T
     // Déclaration de la variable lambda dans l'adapter:
     var onDeleteClickListener: ((Task) -> Unit)? = null
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        public lateinit var titleView: TextView
+        lateinit var titleView: TextView
         lateinit var descriptionView: TextView
 
         init{

@@ -1,7 +1,10 @@
 package com.doublea.td2
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.doublea.td2.task.TaskActivity
+import com.doublea.td2.tasklist.Task
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
