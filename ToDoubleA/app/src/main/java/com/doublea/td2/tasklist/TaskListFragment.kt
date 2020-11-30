@@ -37,8 +37,10 @@ class TaskListFragment : Fragment() {
             taskList.add(Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}"))
             recyclerView?.adapter?.notifyDataSetChanged()
         }
-
-        // En utilisant les synthetics, on écrit juste l'id directement (c'est magique ✨):
-        //recycler_view.layoutManager = LinearLayoutManager(activity)
+        // "implémentation" de la lambda dans le fragment:
+        (recyclerView?.adapter as TaskListAdapter)?.onDeleteClickListener = {
+            task -> taskList.remove(task)
+            recyclerView?.adapter?.notifyDataSetChanged()
+        }
     }
 }
