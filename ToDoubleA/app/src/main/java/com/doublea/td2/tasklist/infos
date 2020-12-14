@@ -1,0 +1,11 @@
+{
+  "firstname": "Pierro",
+  "lastname": "Danelho",
+  "email": "ouin_ouin@gmail.com",
+  "password": "rage_quit_les_profs",
+  "password_confirmation": "rage_quit_les_profs"
+}
+
+curl -X POST "https://android-tasks-api.herokuapp.com/api/v1/users/sign_up" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"firstname\": \"Pierro\", \"lastname\": \"Danelho\", \"email\": \"ouin_ouin@gmail.com\", \"password\": \"rage_quit_les_profs\", \"password_confirmation\": \"rage_quit_les_profs\"}"
+
+https://android-tasks-api.herokuapp.com/api/v1/users/sign_up

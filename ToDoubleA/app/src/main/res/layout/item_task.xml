@@ -16,10 +16,19 @@
         android:background="@android:color/holo_green_dark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <ImageButton
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:backgroundTint="#03776C"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
     <ImageButton
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:backgroundTint="#D34B4F"
         app:srcCompat="@android:drawable/ic_menu_delete" />
 
 

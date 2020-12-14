@@ -1,8 +1,15 @@
 package com.doublea.td2.tasklist
 
 import android.widget.TextView
+import kotlinx.serialization.SerialName
 import java.io.Serializable
 
-data class Task (val id: String, val title: String, val description: String = "") : Serializable {
-
-}
+@kotlinx.serialization.Serializable
+data class Task(
+        //@SerialName("id")
+        val id: String,
+        //@SerialName("title")
+        val title: String,
+        //@SerialName("description")
+        val description: String = "description"
+) : Serializable

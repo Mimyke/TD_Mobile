@@ -8,9 +8,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.doublea.td2.R
 
-class TaskListAdapter(private val taskList: List<Task>) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
+class TaskListAdapter(val taskList: List<Task>) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
     // Déclaration de la variable lambda dans l'adapter:
     var onDeleteClickListener: ((Task) -> Unit)? = null
+    var onEditClickListener: ((Task) -> Unit)? = null
+
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         lateinit var titleView: TextView
         lateinit var descriptionView: TextView
@@ -25,8 +27,11 @@ class TaskListAdapter(private val taskList: List<Task>) : RecyclerView.Adapter<T
                 titleView.setText(task.title)
                 descriptionView = itemView.findViewById(R.id.task_description)
                 descriptionView.setText(task.description)
+
                 val buttonDelete = itemView.findViewById<ImageButton>(R.id.deleteButton)
                 buttonDelete.setOnClickListener {onDeleteClickListener?.invoke(task) }
+                val buttonEdit = itemView.findViewById<ImageButton>(R.id.editButton)
+                buttonEdit.setOnClickListener {onEditClickListener?.invoke(task) }
             }
         }
     }
