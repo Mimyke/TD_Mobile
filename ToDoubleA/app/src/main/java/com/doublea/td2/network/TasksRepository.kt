@@ -25,32 +25,23 @@ class TasksRepository {
         }
     }
 
-    suspend fun updateTask(task:Task) {
-        val editedTask = tasksWebService.updateTask(task)
-        val editableList = _taskList.value.orEmpty().toMutableList()
-        if(editedTask.isSuccessful){
-            val position = editableList.indexOfFirst { task.id == it.id }
-            editableList[position] = editedTask.body()!!
-        } else null
-
-        _taskList.value = editableList
+    suspend fun loadTasks(): List<Task>? {
+        val response = tasksWebService.getTasks()
+        return if (response.isSuccessful) response.body() else null
     }
 
-    suspend fun createTask(task:Task) {
-        val createdTask = tasksWebService.createTask(task)
-        val editableList = _taskList.value.orEmpty().toMutableList()
-        if(createdTask.isSuccessful){
-            editableList.add(createdTask.body()!!)
-        } else null
-        _taskList.value = editableList
+    suspend fun updateTask(task:Task): Task? {
+        val response = tasksWebService.updateTask(task)
+        return if (response.isSuccessful) response.body() else null
     }
 
-    suspend fun deleteTask(task:Task) {
-        val removedTask = tasksWebService.deleteTask(task.id)
-        val editableList = _taskList.value.orEmpty().toMutableList()
-        if(removedTask.isSuccessful){
-            editableList.remove(task)
-        } else null
-        _taskList.value = editableList
+    suspend fun createTask(task:Task): Task? {
+        val response = tasksWebService.createTask(task)
+        return if (response.isSuccessful) response.body() else null
+    }
+
+    suspend fun deleteTask(task:Task): String? {
+        val response = tasksWebService.deleteTask(task.id)
+        return if (response.isSuccessful) response.body() else null
     }
 }

@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,13 +26,10 @@ import kotlin.collections.ArrayList
 import java.util.*
 
 class TaskListFragment : Fragment() {
-    private val taskList = mutableListOf(
-            Task(id = "id_1", title = "Task 1", description = "description 1"),
-            Task(id = "id_2", title = "Task 2"),
-            Task(id = "id_3", title = "Task 3")
-    )
     private var my_text_view: TextView?= null
     private val tasksRepository = TasksRepository()
+    private val adapter = TaskListAdapter()
+    private val viewModel: TaskListViewModel by viewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -43,37 +42,33 @@ class TaskListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         my_text_view = view.findViewById<TextView>(R.id.super_text)
-        // Pour une [RecyclerView] ayant l'id "recycler_view":
         var recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-        var adapter = recyclerView.adapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = TaskListAdapter(taskList)
+        recyclerView.adapter = adapter
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
             val intent = Intent(activity, TaskActivity::class.java)
             startActivityForResult(intent, ADD_TASK_REQUEST_CODE)
-            // recyclerView?.adapter?.notifyDataSetChanged()
         }
         // DELETE BUTTON
-        (recyclerView?.adapter as TaskListAdapter)?.onDeleteClickListener = {
-            task -> taskList.remove(task)
+        adapter.onDeleteClickListener = {
+            task ->
             lifecycleScope.launch {
-                tasksRepository.deleteTask(task)
+                viewModel.deleteTask(task)
             }
-            recyclerView?.adapter?.notifyDataSetChanged()
+            adapter?.notifyDataSetChanged()
         }
         // EDIT BUTTON
-        (recyclerView?.adapter as TaskListAdapter)?.onEditClickListener = {
+        adapter.onEditClickListener = {
             task ->
             val intent = Intent(activity, TaskActivity::class.java)
             intent.putExtra(TaskActivity.TASK_KEY, task)
             startActivityForResult(intent, TaskActivity.EDIT_TASK_REQUEST_CODE)
-            recyclerView?.adapter?.notifyDataSetChanged()
+            adapter.notifyDataSetChanged()
         }
 
-        tasksRepository.taskList.observe(viewLifecycleOwner, Observer {
-            taskList.clear()
-            taskList.addAll(it)
-            recyclerView?.adapter?.notifyDataSetChanged()
+        viewModel.taskList.observe(viewLifecycleOwner, Observer {
+            adapter.taskList = it.toMutableList()
+            adapter.notifyDataSetChanged()
         })
 
     }
@@ -82,15 +77,12 @@ class TaskListFragment : Fragment() {
         val task = data!!.getSerializableExtra(TaskActivity.TASK_KEY) as Task
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == TaskActivity.ADD_TASK_REQUEST_CODE) {
-                taskList.add(task)
                 lifecycleScope.launch {
-                    tasksRepository.createTask(task)
+                    viewModel.addTask(task)
                 }
             } else if (requestCode == TaskActivity.EDIT_TASK_REQUEST_CODE) {
-                val position = taskList.indexOfFirst { task.id == it.id }
-                taskList[position] = task
                 lifecycleScope.launch {
-                    tasksRepository.updateTask(task)
+                    viewModel.editTask(task)
                 }
             }
         }
@@ -102,7 +94,7 @@ class TaskListFragment : Fragment() {
         lifecycleScope.launch {
             val userInfo = Api.userService.getInfo().body()!!
             my_text_view?.text = "${userInfo.firstName} ${userInfo.lastName}"
-            tasksRepository.refresh()
+            viewModel.loadTasks()
         }
         super.onResume()
     }

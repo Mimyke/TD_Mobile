@@ -5,13 +5,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.doublea.td2.R
 
-class TaskListAdapter(val taskList: List<Task>) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
+object TaskDiffCallback : DiffUtil.ItemCallback<Task>() {
+    override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Task, newItem: Task): Boolean {
+        return oldItem.title == newItem.title
+    }
+}
+
+class TaskListAdapter() : ListAdapter<Task, TaskListAdapter.TaskViewHolder>(TaskDiffCallback) {
     // Déclaration de la variable lambda dans l'adapter:
     var onDeleteClickListener: ((Task) -> Unit)? = null
     var onEditClickListener: ((Task) -> Unit)? = null
+    var taskList: List<Task> = emptyList()
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         lateinit var titleView: TextView
@@ -46,7 +59,7 @@ class TaskListAdapter(val taskList: List<Task>) : RecyclerView.Adapter<TaskListA
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        holder.bind(this.taskList.get(position))
+        holder.bind(this.taskList[position])
 
     }
 
