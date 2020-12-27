@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings.Global.putString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.Observer
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.doublea.td2.R
@@ -27,8 +30,11 @@ import kotlin.collections.ArrayList
 import java.util.*
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.doublea.td2.network.SHARED_PREF_TOKEN_KEY
 import com.doublea.td2.userinfo.UserInfoActivity
 import com.doublea.td2.userinfo.UserInfoViewModel
+import androidx.core.content.edit
+import com.doublea.td2.authentification.AuthentificationActivity
 
 class TaskListFragment : Fragment() {
     private var my_text_view: TextView?= null
@@ -84,6 +90,15 @@ class TaskListFragment : Fragment() {
             adapter.notifyDataSetChanged()
         })
 
+        val buttonDisconnect = view.findViewById<Button>(R.id.logout_button)
+        buttonDisconnect.setOnClickListener {
+            // On efface le Token du user
+            PreferenceManager.getDefaultSharedPreferences(context).edit {
+                putString(SHARED_PREF_TOKEN_KEY, "auth_token_key") // Valeur par défaut
+            }
+            startActivity(Intent(activity, AuthentificationActivity::class.java))
+        }
+
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // CREATE OR UPDATE A TASK
@@ -111,7 +126,6 @@ class TaskListFragment : Fragment() {
         userModel.userInfo.observe(viewLifecycleOwner, {
             view?.findViewById<TextView>(R.id.super_text)?.text = "${userModel.userInfo.value?.firstName} ${userModel.userInfo.value?.lastName}"
             my_image_view?.load(userModel.userInfo.value?.avatar) {
-                //my_image_view?.load("https://www.thefamouspeople.com/profiles/thumbs/mimi-keene-4.jpg") {
                 crossfade(true)
                 transformations(CircleCropTransformation())
             }

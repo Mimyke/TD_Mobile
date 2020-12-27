@@ -1,3 +1,3 @@
 package com.doublea.td2.network
 
-const val SHARED_PREF_TOKEN_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozNzIsImV4cCI6MTY0MDYxNTAwN30.vX5YksCywF-QDMb0tISi8fa0y04yFzQJbVyoaNr0zoE"
+const val SHARED_PREF_TOKEN_KEY = "auth_token_key"

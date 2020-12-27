@@ -1,5 +1,6 @@
 package com.doublea.td2.authentification
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,9 @@ import android.widget.Button
 import android.widget.TextView
 import com.doublea.td2.R
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
+import com.doublea.td2.MainActivity
+import com.doublea.td2.network.SHARED_PREF_TOKEN_KEY
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,12 +47,20 @@ class AuthentificationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Redirection if already logged in
+        val token = PreferenceManager.getDefaultSharedPreferences(context).getString(SHARED_PREF_TOKEN_KEY, "")
+        if (token != null && token != "auth_token_key")
+            startActivity(Intent(activity, MainActivity::class.java))
+
         val go_login_button = view.findViewById<Button>(R.id.go_login_button)
         val go_signup_button = view.findViewById<Button>(R.id.go_signup_button)
 
+        // Go to Login Fragment
         go_login_button.setOnClickListener {
             findNavController().navigate(R.id.goto_fragment_login)
         }
+        // Go to SignUp Fragment
         go_signup_button.setOnClickListener {
             findNavController().navigate(R.id.goto_fragment_signup)
         }

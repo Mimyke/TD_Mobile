@@ -51,14 +51,20 @@ class SignupFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val firstname_signup = view.findViewById<EditText>(R.id.firstname_signup).toString()
-        val lastname_signup = view.findViewById<EditText>(R.id.lastname_signup).toString()
-        val email_signup = view.findViewById<EditText>(R.id.email_signup).toString()
-        val password_signup = view.findViewById<EditText>(R.id.password_signup).toString()
-        val confirm_signup = view.findViewById<EditText>(R.id.confirm_signup).toString()
+        val edit_firstname_signup = view.findViewById<EditText>(R.id.firstname_signup)
+        val edit_lastname_signup = view.findViewById<EditText>(R.id.lastname_signup)
+        val edit_email_signup = view.findViewById<EditText>(R.id.email_signup)
+        val edit_password_signup = view.findViewById<EditText>(R.id.password_signup)
+        val edit_confirm_signup = view.findViewById<EditText>(R.id.confirm_signup)
         val button_signup = view.findViewById<Button>(R.id.button_signup)
 
         button_signup.setOnClickListener {
+            val firstname_signup = edit_firstname_signup.toString()
+            val lastname_signup = edit_lastname_signup.toString()
+            val email_signup = edit_email_signup.toString()
+            val password_signup = edit_password_signup.toString()
+            val confirm_signup = edit_confirm_signup.toString()
+
 
             if (firstname_signup.isEmpty() || lastname_signup.isEmpty() || email_signup.isEmpty() || password_signup.isEmpty() || confirm_signup.isEmpty()) {
                 Toast.makeText(context, "Veuillez compléter les champs vides", Toast.LENGTH_LONG).show()

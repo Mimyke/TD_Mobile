@@ -53,12 +53,13 @@ class LoginFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val email_login = view.findViewById<EditText>(R.id.email_login).toString()
-        val password_login = view.findViewById<EditText>(R.id.password_login).toString()
+        val edit_email_login = view.findViewById<EditText>(R.id.email_login)
+        val edit_password_login = view.findViewById<EditText>(R.id.password_login)
         val button_login = view.findViewById<Button>(R.id.button_login)
 
         button_login.setOnClickListener {
-
+            val email_login = edit_email_login.text.toString()
+            val password_login = edit_password_login.text.toString()
             if (email_login.isEmpty() || password_login.isEmpty()) {
                 Toast.makeText(context, "Veuillez compléter les champs vides", Toast.LENGTH_LONG).show()
             } else {
