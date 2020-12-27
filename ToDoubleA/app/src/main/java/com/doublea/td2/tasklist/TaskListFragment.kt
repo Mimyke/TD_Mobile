@@ -28,13 +28,14 @@ import java.util.*
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.doublea.td2.userinfo.UserInfoActivity
+import com.doublea.td2.userinfo.UserInfoViewModel
 
 class TaskListFragment : Fragment() {
     private var my_text_view: TextView?= null
     private var my_image_view: ImageView?= null
-    private val tasksRepository = TasksRepository()
     private val adapter = TaskListAdapter()
     private val viewModel: TaskListViewModel by viewModels()
+    private val userModel: UserInfoViewModel by viewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -103,16 +104,20 @@ class TaskListFragment : Fragment() {
 
 
     override fun onResume() {
+        super.onResume()
         lifecycleScope.launch {
-            val userInfo = Api.userService.getInfo().body()!!
-            my_text_view?.text = "${userInfo.firstName} ${userInfo.lastName}"
-            my_image_view?.load("https://www.thefamouspeople.com/profiles/thumbs/mimi-keene-4.jpg") {
+            userModel.getInfo()!!
+        }
+        userModel.userInfo.observe(viewLifecycleOwner, {
+            view?.findViewById<TextView>(R.id.super_text)?.text = "${userModel.userInfo.value?.firstName} ${userModel.userInfo.value?.lastName}"
+            my_image_view?.load(userModel.userInfo.value?.avatar) {
+                //my_image_view?.load("https://www.thefamouspeople.com/profiles/thumbs/mimi-keene-4.jpg") {
                 crossfade(true)
                 transformations(CircleCropTransformation())
             }
             viewModel.loadTasks()
-        }
-        super.onResume()
+
+        })
     }
 
 }
