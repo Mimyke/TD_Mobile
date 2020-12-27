@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/firstname_signup"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="Mimi"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/lastname_signup"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="Keene"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/email_signup"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="MimiKean@denelho.com"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/password_signup"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/confirm_signup"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="textPassword" />
+
+
+    <Button
+        android:id="@+id/button_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign Up" />
+
+
+</LinearLayout>

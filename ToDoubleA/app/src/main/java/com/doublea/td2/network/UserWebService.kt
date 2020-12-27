@@ -1,6 +1,10 @@
 package com.doublea.td2.network
 
 import android.net.Uri
+import com.doublea.td2.authentification.LoginForm
+import com.doublea.td2.authentification.LoginResponse
+import com.doublea.td2.authentification.SignUpForm
+import com.doublea.td2.authentification.SignUpResponse
 import com.doublea.td2.network.UserInfo
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -17,4 +21,10 @@ interface UserWebService {
 
     @PATCH("users")
     suspend fun update(@Body user: UserInfo): Response<UserInfo>
+
+    @POST("users/login")
+    suspend fun login(@Body user: LoginForm): Response<LoginResponse>
+
+    @POST("users/signup")
+    suspend fun signup(@Body user: SignUpForm): Response<SignUpResponse>
 }

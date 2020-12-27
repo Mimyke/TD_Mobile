@@ -1,17 +1,27 @@
 package com.doublea.td2.network
 
+import android.content.Context
+import androidx.preference.PreferenceManager
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 
-object Api {
+class Api(private val context: Context) {
 
-    // constantes qui serviront à faire les requêtes
-    private const val BASE_URL = "https://android-tasks-api.herokuapp.com/api/"
-    private const val TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozMDksImV4cCI6MTYzOTQ3NzM3Nn0.fc4IojmJvGZ6Goot5Vip3OBi1AWpC3BAV3MqUh3vrRM"
-    //"eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozMDksImV4cCI6MTYzOTQ3NzExNH0.Vm00CUlJdzNjeHk2A85x7Q34eIi2tMzMGgWOgdJ2kwo"
+    companion object {
+        // constantes qui serviront à faire les requêtes
+        private const val BASE_URL = "https://android-tasks-api.herokuapp.com/api/"
+        //private const val TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozNzIsImV4cCI6MTY0MDYxNTAwN30.vX5YksCywF-QDMb0tISi8fa0y04yFzQJbVyoaNr0zoE"
+        lateinit var INSTANCE: Api
+    }
+
+    fun getToken() : String? {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(SHARED_PREF_TOKEN_KEY, "")
+    }
+
+
 
     // on construit une instance de parseur de JSON:
     private val jsonSerializer = Json {
@@ -29,7 +39,7 @@ object Api {
                 .addInterceptor { chain ->
                     // intercepteur qui ajoute le `header` d'authentification avec votre token:
                     val newRequest = chain.request().newBuilder()
-                            .addHeader("Authorization", "Bearer $TOKEN")
+                            .addHeader("Authorization", "Bearer ${getToken()}")
                             .build()
                     chain.proceed(newRequest)
                 }

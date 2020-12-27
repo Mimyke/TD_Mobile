@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph.xml"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/fragment_authentification">
+
+    <fragment
+        android:id="@+id/fragment_authentification"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.doublea.td2.authentification.AuthentificationFragment">
+
+        <action
+            android:id="@+id/goto_fragment_login"
+            app:destination="@id/fragment_login" />
+        <action
+            android:id="@+id/goto_fragment_signup"
+            app:destination="@id/fragment_signup" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_login"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.doublea.td2.authentification.LoginFragment" />
+
+    <fragment
+        android:id="@+id/fragment_signup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.doublea.td2.authentification.SignupFragment" />
+
+</navigation>

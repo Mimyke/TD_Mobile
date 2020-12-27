@@ -3,7 +3,7 @@ package com.doublea.td2.network
 import okhttp3.MultipartBody
 
 class UserInfoRepository {
-    private val userWebService = Api.userWebService
+    private val userWebService = Api.INSTANCE.userWebService
 
     suspend fun getInfo(): UserInfo? {
         val response = userWebService.getInfo()
