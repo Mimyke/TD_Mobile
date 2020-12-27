@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.doublea.td2">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,7 +24,12 @@
                 <action android:name="android.intent.action.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".userinfo.UserInfoActivity"
+            tools:ignore="Instantiatable">
+            <intent-filter>
+                <action android:name="android.intent.action.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
-

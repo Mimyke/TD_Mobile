@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -24,9 +25,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 import java.util.*
+import coil.load
+import coil.transform.CircleCropTransformation
+import com.doublea.td2.userinfo.UserInfoActivity
 
 class TaskListFragment : Fragment() {
     private var my_text_view: TextView?= null
+    private var my_image_view: ImageView?= null
     private val tasksRepository = TasksRepository()
     private val adapter = TaskListAdapter()
     private val viewModel: TaskListViewModel by viewModels()
@@ -42,6 +47,7 @@ class TaskListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         my_text_view = view.findViewById<TextView>(R.id.super_text)
+        my_image_view = view.findViewById<ImageView>(R.id.super_image)
         var recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
@@ -64,6 +70,12 @@ class TaskListFragment : Fragment() {
             intent.putExtra(TaskActivity.TASK_KEY, task)
             startActivityForResult(intent, TaskActivity.EDIT_TASK_REQUEST_CODE)
             adapter.notifyDataSetChanged()
+        }
+
+        // Photo on click
+        my_image_view?.setOnClickListener {
+                    val intent = Intent(activity, UserInfoActivity::class.java)
+                    startActivity(intent)
         }
 
         viewModel.taskList.observe(viewLifecycleOwner, Observer {
@@ -94,6 +106,10 @@ class TaskListFragment : Fragment() {
         lifecycleScope.launch {
             val userInfo = Api.userService.getInfo().body()!!
             my_text_view?.text = "${userInfo.firstName} ${userInfo.lastName}"
+            my_image_view?.load("https://www.thefamouspeople.com/profiles/thumbs/mimi-keene-4.jpg") {
+                crossfade(true)
+                transformations(CircleCropTransformation())
+            }
             viewModel.loadTasks()
         }
         super.onResume()
