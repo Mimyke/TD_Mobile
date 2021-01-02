@@ -70,7 +70,7 @@ class LoginFragment : Fragment() {
 
                         val token = loginResponse.body()?.token
 
-                        Toast.makeText(context, token, Toast.LENGTH_LONG).show()
+                        //Toast.makeText(context, token, Toast.LENGTH_LONG).show()
                         PreferenceManager.getDefaultSharedPreferences(context).edit {
                             putString(SHARED_PREF_TOKEN_KEY, token)
                         }

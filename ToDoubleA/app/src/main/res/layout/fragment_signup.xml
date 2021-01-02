@@ -24,7 +24,7 @@
         android:id="@+id/email_signup"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:hint="MimiKean@denelho.com"
+        android:hint="MimiKean@danelho.com"
         android:inputType="textPersonName" />
 
     <EditText

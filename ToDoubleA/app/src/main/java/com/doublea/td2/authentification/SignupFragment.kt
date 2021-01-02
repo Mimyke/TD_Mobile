@@ -59,31 +59,32 @@ class SignupFragment : Fragment() {
         val button_signup = view.findViewById<Button>(R.id.button_signup)
 
         button_signup.setOnClickListener {
-            val firstname_signup = edit_firstname_signup.toString()
-            val lastname_signup = edit_lastname_signup.toString()
-            val email_signup = edit_email_signup.toString()
-            val password_signup = edit_password_signup.toString()
-            val confirm_signup = edit_confirm_signup.toString()
+            val firstname_signup = edit_firstname_signup.text.toString()
+            val lastname_signup = edit_lastname_signup.text.toString()
+            val email_signup = edit_email_signup.text.toString()
+            val password_signup = edit_password_signup.text.toString()
+            val confirm_signup = edit_confirm_signup.text.toString()
 
 
             if (firstname_signup.isEmpty() || lastname_signup.isEmpty() || email_signup.isEmpty() || password_signup.isEmpty() || confirm_signup.isEmpty()) {
                 Toast.makeText(context, "Veuillez compléter les champs vides", Toast.LENGTH_LONG).show()
             } else {
-                val SignUpForm = SignUpForm(firstname_signup, lastname_signup, email_signup, password_signup, confirm_signup)
-                lifecycleScope.launch {
-                    val SignUpResponse = Api.INSTANCE.userWebService.signup(SignUpForm)
-                    if (SignUpResponse.isSuccessful) {
-
-                        val token = SignUpResponse.body()?.token
-
-                        Toast.makeText(context, token, Toast.LENGTH_LONG).show()
-                        PreferenceManager.getDefaultSharedPreferences(context).edit {
-                            putString(SHARED_PREF_TOKEN_KEY, token)
+                if(password_signup != confirm_signup){
+                    Toast.makeText(context, "Le mot de passe doit être identique", Toast.LENGTH_LONG).show()
+                }else{
+                    val signUpForm = SignUpForm(firstname_signup, lastname_signup, email_signup, password_signup, confirm_signup)
+                    lifecycleScope.launch {
+                        val signUpResponse = Api.INSTANCE.userWebService.signup(signUpForm)
+                        if (signUpResponse.isSuccessful) {
+                            val token = signUpResponse.body()?.token
+                            PreferenceManager.getDefaultSharedPreferences(context).edit {
+                                putString(SHARED_PREF_TOKEN_KEY, token)
+                            }
+                            startActivity(Intent(activity, MainActivity::class.java))
+                        } else {
+                            Toast.makeText(context, "Erreur de création d'un nouveau compte", Toast.LENGTH_LONG).show()
                         }
-                    } else {
-                        Toast.makeText(context, "Erreur de création d'un nouveau compte", Toast.LENGTH_LONG).show()
                     }
-
                 }
             }
 
